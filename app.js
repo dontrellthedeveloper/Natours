@@ -42,6 +42,7 @@ app.use(
       workerSrc: ["'self'", 'data:', 'blob:'],
       childSrc: ["'self'", 'blob:'],
       imgSrc: ["'self'", 'data:', 'blob:'],
+      connectSrc: ["'self'", `ws://localhost:8080/`],
       connectSrc: [
         "'self'",
         'blob:',
@@ -51,6 +52,7 @@ app.use(
     },
   })
 );
+
 
 
 
