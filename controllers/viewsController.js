@@ -53,3 +53,14 @@ exports.getLoginForm = (req,res) => {
     title: 'Log into your account'
   })
 };
+
+exports.getAccount = (req,res) => {
+  res.status(200)
+    // .set(
+    //   'Content-Security-Policy',
+    //   "script-src 'self' https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js 'unsafe-inline' 'unsafe-eval';"
+    // )
+    .render('account', {
+      title: 'Your account'
+    })
+};
