@@ -6717,10 +6717,15 @@ var logout = /*#__PURE__*/function () {
   return function logout() {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); // const mapBox = document.getElementById('map');
 
-var loginForm = document.querySelector('.form');
-var logOutBtn = document.querySelector('.nav__el--logout');
+
+var loginForm = document.querySelector('.form--login');
+var logOutBtn = document.querySelector('.nav__el--logout'); // if (mapBox) {
+//   const locations = JSON.parse(mapBox.dataset.locations);
+//   displayMap(locations);
+// }
+
 if (loginForm) loginForm.addEventListener('submit', function (e) {
   e.preventDefault();
   var email = document.getElementById('email').value;
