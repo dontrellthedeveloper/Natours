@@ -6620,6 +6620,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+// import axios from 'axios';
 var hideAlert = function hideAlert() {
   var el = document.querySelector('.alert');
   if (el) el.parentElement.removeChild(el);
@@ -6717,11 +6718,58 @@ var logout = /*#__PURE__*/function () {
   return function logout() {
     return _ref2.apply(this, arguments);
   };
+}();
+
+var updateData = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(name, email) {
+    var res;
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            _context3.next = 3;
+            return axios({
+              method: 'PATCH',
+              url: '/api/v1/users/updateMe',
+              data: {
+                name: name,
+                email: email
+              }
+            });
+
+          case 3:
+            res = _context3.sent;
+
+            if (res.data.status === 'success') {
+              showAlert('success', 'Data updated successfully');
+            }
+
+            _context3.next = 10;
+            break;
+
+          case 7:
+            _context3.prev = 7;
+            _context3.t0 = _context3["catch"](0);
+            showAlert('error', _context3.t0.response.data.message);
+
+          case 10:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 7]]);
+  }));
+
+  return function updateData(_x3, _x4) {
+    return _ref3.apply(this, arguments);
+  };
 }(); // const mapBox = document.getElementById('map');
 
 
 var loginForm = document.querySelector('.form--login');
-var logOutBtn = document.querySelector('.nav__el--logout'); // if (mapBox) {
+var logOutBtn = document.querySelector('.nav__el--logout');
+var userDataForm = document.querySelector('.form-user-data'); // if (mapBox) {
 //   const locations = JSON.parse(mapBox.dataset.locations);
 //   displayMap(locations);
 // }
@@ -6733,6 +6781,12 @@ if (loginForm) loginForm.addEventListener('submit', function (e) {
   login(email, password);
 });
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
+if (userDataForm) userDataForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.getElementById('name').value;
+  var email = document.getElementById('email').value;
+  updateData(name, email);
+});
 },{}],"mapbox.js":[function(require,module,exports) {
 var locations = JSON.parse(document.getElementById('map').dataset.locations);
 console.log(locations);

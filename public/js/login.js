@@ -1,3 +1,4 @@
+// import axios from 'axios';
 
 const hideAlert = () => {
   const el = document.querySelector('.alert');
@@ -46,9 +47,30 @@ const logout = async () => {
 };
 
 
+const updateData = async (name, email) => {
+  try {
+    const res = await axios({
+      method: 'PATCH',
+      url: '/api/v1/users/updateMe',
+      data: {
+        name,
+        email
+      }
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Data updated successfully')
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message)
+  }
+};
+
+
 // const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
+const userDataForm = document.querySelector('.form-user-data');
 
 // if (mapBox) {
 //   const locations = JSON.parse(mapBox.dataset.locations);
@@ -65,3 +87,11 @@ if(loginForm)
 
 if(logOutBtn)
   logOutBtn.addEventListener('click', logout);
+
+if(userDataForm)
+  userDataForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    updateData(name, email);
+  });
