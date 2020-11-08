@@ -6718,50 +6718,49 @@ var logout = /*#__PURE__*/function () {
   return function logout() {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); // type is either password or data
 
-var updateData = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(name, email) {
-    var res;
+
+var updateSettings = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(data, type) {
+    var url, res;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            _context3.next = 3;
+            url = type === 'password' ? '/api/v1/users/updateMyPassword' : '/api/v1/users/updateMe';
+            _context3.next = 4;
             return axios({
               method: 'PATCH',
-              url: '/api/v1/users/updateMe',
-              data: {
-                name: name,
-                email: email
-              }
+              url: url,
+              data: data
             });
 
-          case 3:
+          case 4:
             res = _context3.sent;
 
             if (res.data.status === 'success') {
-              showAlert('success', 'Data updated successfully');
+              showAlert('success', "".concat(type.toUpperCase(), " updated successfully!"));
             }
 
-            _context3.next = 10;
+            _context3.next = 11;
             break;
 
-          case 7:
-            _context3.prev = 7;
+          case 8:
+            _context3.prev = 8;
             _context3.t0 = _context3["catch"](0);
             showAlert('error', _context3.t0.response.data.message);
 
-          case 10:
+          case 11:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 7]]);
+    }, _callee3, null, [[0, 8]]);
   }));
 
-  return function updateData(_x3, _x4) {
+  return function updateSettings(_x3, _x4) {
     return _ref3.apply(this, arguments);
   };
 }(); // const mapBox = document.getElementById('map');
@@ -6769,7 +6768,8 @@ var updateData = /*#__PURE__*/function () {
 
 var loginForm = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout');
-var userDataForm = document.querySelector('.form-user-data'); // if (mapBox) {
+var userDataForm = document.querySelector('.form-user-data');
+var userPasswordForm = document.querySelector('.form-user-password'); // if (mapBox) {
 //   const locations = JSON.parse(mapBox.dataset.locations);
 //   displayMap(locations);
 // }
@@ -6785,8 +6785,48 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   e.preventDefault();
   var name = document.getElementById('name').value;
   var email = document.getElementById('email').value;
-  updateData(name, email);
+  updateSettings({
+    name: name,
+    email: email
+  }, 'data');
 });
+if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
+    var passwordCurrent, password, passwordConfirm;
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            e.preventDefault();
+            document.querySelector('.btn--save-password').textContent = 'Updating...';
+            passwordCurrent = document.getElementById('password-current').value;
+            password = document.getElementById('password').value;
+            passwordConfirm = document.getElementById('password-confirm').value;
+            _context4.next = 7;
+            return updateSettings({
+              passwordCurrent: passwordCurrent,
+              password: password,
+              passwordConfirm: passwordConfirm
+            }, 'password');
+
+          case 7:
+            document.querySelector('.btn--save-password').textContent = 'Save password';
+            document.getElementById('password-current').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('password-confirm').value = '';
+
+          case 11:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function (_x5) {
+    return _ref4.apply(this, arguments);
+  };
+}());
 },{}],"mapbox.js":[function(require,module,exports) {
 var locations = JSON.parse(document.getElementById('map').dataset.locations);
 console.log(locations);
