@@ -17,6 +17,7 @@ const router = express.Router();
 
 router.use('/:tourId/reviews', reviewRouter);
 
+
 router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTours, tourController.getAllTours);
@@ -33,7 +34,7 @@ router.route('/tours-within/:distance/center/:latlng/unit/:unit').get(tourContro
 // /tours-within?distance=233&center=-40,45&unit=mi
 // /tours-within/233/center/-40,45/unit/mi
 
-router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances)
+router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
 
 router
   .route('/')

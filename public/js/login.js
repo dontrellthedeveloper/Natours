@@ -1,3 +1,6 @@
+
+// import {bookTour} from './stripe';
+
 // import axios from 'axios';
 
 const hideAlert = () => {
@@ -66,11 +69,63 @@ const updateSettings = async (data, type) => {
 };
 
 
+
+
+
+
+
+
+
+// const bookTour = async tourId => {
+//   try {
+//     const stripe = Stripe('sk_test_bNOmvxf13EWB2tOrbvjHWmKt00jLmjXiyN');
+//     // 1) Get checkout session from API
+//     const session = await axios(`http://127.0.0.1:3000/api/v1/bookings/checkout-session/${tourId}`);
+//
+//     console.log(session);
+//     // 2) Create checkout form + charge credit card
+//     await stripe.redirectToCheckout({
+//       sessionId: session.data.sessionId
+//     })
+//
+//   } catch (err) {
+//     console.log(err);
+//     showAlert('error', err);
+//   }
+//
+// };
+
+
+
+
+const bookTour = async tourId => {
+  try {
+    const stripe = Stripe('pk_test_nW7VlHsfGmzKJQmbwIZHI6KG00P1c4Gs7q');
+    // 1) Get checkout session from API
+    const session = await axios(`/api/v1/bookings/checkout-session/${tourId}`);
+
+    console.log(session);
+    // 2) Create checkout form + charge credit card
+    await stripe.redirectToCheckout({
+      sessionId: session.data.session.id
+    })
+
+  } catch (err) {
+    console.log(err);
+    showAlert('error', err);
+  }
+
+};
+
+
+
+
 // const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const bookBtn = document.getElementById('book-tour');
 
 // if (mapBox) {
 //   const locations = JSON.parse(mapBox.dataset.locations);
@@ -113,4 +168,11 @@ if(userPasswordForm)
     document.getElementById('password-current').value = '';
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
+  });
+
+if(bookBtn)
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    const {tourId} = e.target.dataset;
+    bookTour(tourId);
   });
